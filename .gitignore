@@ -1,0 +1,5 @@
+../.idea/
+.env
+/tmp/
+.env.local
+.env.*.local

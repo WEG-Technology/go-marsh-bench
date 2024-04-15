@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package flightsearch;
+option go_package = "/flightsearch";
+
+// The flight search service definition.
+service FlightSearchService {
+  // Searches for flights based on detailed criteria.
+  rpc SearchFlights (SearchFlightsRequest) returns (SearchFlightsResponse);
+}
+
+// The request message containing search and passenger criteria.
+message SearchFlightsRequest {
+  string origin = 1;           // Departure airport code
+  string destination = 2;      // Arrival airport code
+  string departure_date = 3;   // Departure date
+  int32 adults = 4;            // Number of adult passengers
+  int32 children = 5;          // Number of children passengers
+  int32 infants = 6;           // Number of infants passengers
+  bool direct_flights_only = 7; // Flag to request only direct flights
+  string class_type = 8;       // Class of service (e.g., Economy, Business, First Class)
+  repeated string airlines = 9; // Preferred airlines
+}
+
+// The response message containing the search results.
+message SearchFlightsResponse {
+  repeated FlightInfo flights = 1;  // List of flights that match the search criteria
+}
+
+// Information about a single flight.
+message FlightInfo {
+  string airline = 1;                 // Airline name
+  string flight_number = 2;           // Flight number
+  string origin = 3;                  // Departure airport code
+  string destination = 4;             // Arrival airport code
+  string departure_time = 5;          // Scheduled departure time
+  string arrival_time = 6;            // Scheduled arrival time
+  float price = 7;                    // Price of the ticket per passenger
+  bool is_direct = 8;                 // Indicates if the flight is direct
+  repeated ConnectionInfo connections = 9; // Information about connections if not direct
+}
+
+// Information about connecting flights if any.
+message ConnectionInfo {
+  string airline = 1;                 // Connecting flight's airline
+  string flight_number = 2;           // Connecting flight's number
+  string origin = 3;                  // Connecting flight's departure airport code
+  string destination = 4;             // Connecting flight's arrival airport code
+  string departure_time = 5;          // Connecting flight's departure time
+  string arrival_time = 6;            // Connecting flight's arrival time
+  int32 layover_minutes = 7;          // Layover time in minutes at the connecting airport
+}
